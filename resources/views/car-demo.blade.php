@@ -47,7 +47,7 @@
                         rel="stylesheet"
                         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
                 />
-                <script src="http://localhost:8000/js/toggle.js"></script>
+                <script src="https://staging.yasmina.ai/js/toggle.js"></script>
                 <!-- Bootstrap 5 JS Bundle -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
                 <div class="card-header">
