@@ -32,7 +32,7 @@
                 <p class="mb-3">{{ $insuranceLabel }}</p>
                 <!-- Download Certificate button -->
                 <a
-                        href="https://axjqy4nuifd8.compat.objectstorage.me-jeddah-1.oraclecloud.com/Yasmina-Dev-bucket/01JGV2V2WSS4BPB4PP647J6XY9.png"
+                        href="https://imgv2-2-f.scribdassets.com/img/document/808075094/original/a3ee2389c4/1?v=1"
                         class="btn btn-primary"
                         download="certificate.jpg"
                 >
