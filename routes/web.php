@@ -21,4 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
+Route::get('/car-insurance', function() {
+	return view('car-demo');
+});
+
 require __DIR__.'/auth.php';
