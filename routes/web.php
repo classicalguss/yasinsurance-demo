@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DemoController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -24,5 +25,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/car-insurance', function() {
 	return view('car-demo');
 });
+
+Route::post('/checkout', [DemoController::class, 'checkout'])->name('checkout');
+
 
 require __DIR__.'/auth.php';

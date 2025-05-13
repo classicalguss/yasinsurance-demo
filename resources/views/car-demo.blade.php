@@ -22,6 +22,13 @@
     <!-- Constrain width -->
     <div class="row" style="max-width: 1000px; width: 100%">
 
+        <form
+                action="{{ route('checkout') }}"
+                method="POST"
+                class="row g-3"
+                style="max-width: 900px; width:100%;"
+        >
+            @csrf
         <!-- Left column: image + insurance card -->
         <div class="col-md-8">
             <!-- Car image card -->
@@ -41,15 +48,11 @@
             </div>
             <!-- Insurance toggle card -->
 
+
+
             <div class="card w-100">
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link
-                        rel="stylesheet"
-                        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-                />
                 <script src="https://staging.yasmina.ai/js/toggle.js"></script>
                 <!-- Bootstrap 5 JS Bundle -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
                 <div class="card-header">
                     Add Insurance by
                     <img class="ms-2" src="https://www.tawuniya.com/assets/tawuniya-logo-BFmobvJd.svg"/>
@@ -57,15 +60,21 @@
                 <div class="card-body align-items-center">
                     <div class="d-flex justify-content-between">
                         <!-- Toggle Switch -->
-                        <select class="form-select form-select-sm w-50" id="insuranceCoverage" name="insurance_coverage">
-                            <option value="comprehensive">Comprehensive (Alshamel)</option>
-                            <option value="third_party_plus">Third Party Plus Insurance</option>
-                            <option value="third_party">Third Party Insurance</option>
-                            <option value="no_coverage">No insurance coverage</option>
+                        <select id="insuranceCoverage" name="insurance_coverage" class="form-select form-select-sm w-50">
+                            <option value="comprehensive" data-price="500">
+                                Comprehensive (Alshamel)
+                            </option>
+                            <option value="third_party_plus" data-price="110">
+                                Third Party Plus Insurance
+                            </option>
+                            <option value="third_party" data-price="100">
+                                Third Party Insurance
+                            </option>
+                            <option value="no_coverage" data-price="0">
+                                No insurance coverage
+                            </option>
                         </select>
-
-                        <!-- Price Display -->
-                        <span class="mb-0">Price: <span id="insurancePrice">0.00 SAR</span></span>
+                        <span>Price: <span id="insurancePrice">0 SAR</span></span>
                     </div>
                     <div class="mt-4 ms-2">
                         <ul class="list-unstyled" id="coverageList">
@@ -90,38 +99,85 @@
                 <div class="card-header bg-white">
                     <h5 class="mb-0">Price details</h5>
                 </div>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group list-group-flush" id="priceDetailsList">
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Car price</span>
-                        <span>75,000 SAR</span>
+                        <span id="carPrice" data-price="75000">75,000 SAR</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Delivery fee</span>
-                        <span>500 SAR</span>
+                        <span id="deliveryFee" data-price="500">500 SAR</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Commission</span>
-                        <span>1,125 SAR</span>
+                        <span id="commission" data-price="1125">1,125 SAR</span>
+                    </li>
+                    <li
+                            id="insuranceRow"
+                            class="list-group-item d-flex justify-content-between d-none"
+                    >
+                        <span>Insurance</span>
+                        <span id="insuranceDetail" data-price="0">0 SAR</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>VAT (15%)</span>
-                        <span>11,625 SAR</span>
+                        <span id="vat">0 SAR</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between fw-semibold">
                         <span>Total</span>
-                        <span>88,250 SAR</span>
+                        <span id="total">0 SAR</span>
                     </li>
                 </ul>
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100">
                         Proceed to payment
                     </button>
                 </div>
             </div>
         </div>
 
+        </form>
     </div>
 </div>
 
 </body>
+<script>
+    const select          = document.getElementById("insuranceCoverage");
+    const insuranceRow    = document.getElementById("insuranceRow");
+    const insuranceDetail = document.getElementById("insuranceDetail");
+    const carPriceEl      = document.getElementById("carPrice");
+    const deliveryFeeEl   = document.getElementById("deliveryFee");
+    const commissionEl    = document.getElementById("commission");
+    const vatEl           = document.getElementById("vat");
+    const totalEl         = document.getElementById("total");
+    const priceLabel      = document.getElementById("insurancePrice");
+
+    function recalc() {
+        // 1. Pull raw numbers from data-price
+        const car   = Number(carPriceEl.dataset.price);
+        const fee   = Number(deliveryFeeEl.dataset.price);
+        const comm  = Number(commissionEl.dataset.price);
+        const ins   = Number(select.selectedOptions[0].dataset.price);
+
+        // 2. Update the inline label
+        priceLabel.textContent = ins.toLocaleString() + " SAR";
+
+        // 3. Show/hide insurance row
+        if (ins > 0) {
+            insuranceDetail.textContent = ins.toLocaleString() + " SAR";
+            insuranceRow.classList.remove("d-none");
+        } else {
+            insuranceRow.classList.add("d-none");
+        }
+
+        // 4. Recalculate VAT & Total
+        const subTotal  = car + fee + comm + ins;
+        const vatAmount = Math.round(subTotal * 0.15);
+        vatEl.textContent  = vatAmount.toLocaleString() + " SAR";
+        totalEl.textContent = (subTotal + vatAmount).toLocaleString() + " SAR";
+    }
+
+    select.addEventListener("change", recalc);
+    recalc(); // initial call
+</script>
 </html>
