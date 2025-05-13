@@ -29,7 +29,15 @@
 
             @if($insuranceKey !== 'no_coverage')
                 <h6>Insurance Selected</h6>
-                <p class="mb-0">{{ $insuranceLabel }}</p>
+                <p class="mb-3">{{ $insuranceLabel }}</p>
+                <!-- Download Certificate button -->
+                <a
+                        href="http://uvu.edu/riskmanagement/images/samplecert.jpg"
+                        class="btn btn-primary"
+                        download="certificate.jpg"
+                >
+                    <i class="bi bi-download me-1"></i> Download Insurance Certificate
+                </a>
             @else
                 <h6>No Insurance Selected</h6>
             @endif
