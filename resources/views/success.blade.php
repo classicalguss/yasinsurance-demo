@@ -32,7 +32,7 @@
                 <p class="mb-3">{{ $insuranceLabel }}</p>
                 <!-- Download Certificate button -->
                 <a
-                        href="http://uvu.edu/riskmanagement/images/samplecert.jpg"
+                        href="https://axjqy4nuifd8.compat.objectstorage.me-jeddah-1.oraclecloud.com/Yasmina-Dev-bucket/01JGV2V2WSS4BPB4PP647J6XY9.png"
                         class="btn btn-primary"
                         download="certificate.jpg"
                 >

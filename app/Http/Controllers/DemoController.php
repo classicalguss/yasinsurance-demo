@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class DemoController extends Controller
 {
@@ -28,6 +30,37 @@ class DemoController extends Controller
 			'engine'  => '2.4L 4-Cylinder',
 			'price'   => 75000,
 		];
+
+		if ($key != "no_coverage") {
+			//Buy insurance
+			$response = Http::timeout(30)
+				->acceptJson()
+				->post(config('services.yasmina.base_uri') . '/oauth/token', [
+					'grant_type'    => 'client_credentials',
+					'client_id'     => config('services.yasmina.client_id'),
+					'client_secret' => config('services.yasmina.client_secret'),
+				]);
+
+			if ($response->successful()) {
+
+				$data = [
+					'vin'                 => Str::random(17),
+					'car_sequence_number' => sprintf('%09d', random_int(0, 999_999_999)),
+					'current_car_owner'   => '1234567890',
+					'new_owner_id'        => '9876543210',
+				];
+
+				// (2) Grab your access_token however you stored it
+
+				$responseJSON = $response->json();
+
+				// (3) Fire the POST
+				$response = Http::timeout(30)
+					->withToken($responseJSON['access_token'])
+					->acceptJson()
+					->post(config('services.yasmina.base_uri') . '/api/v1/car/policies', $data);
+			}
+		}
 
 		return view('success', [
 			'insuranceKey'   => $key,
