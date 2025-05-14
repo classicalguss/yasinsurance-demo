@@ -5,7 +5,7 @@
 
                 <livewire:insurance />
                 <iframe
-                        src="http://localhost:8000/request-sme-policy"
+                        src="http://staging.yasmina.ai/request-sme-policy"
                         width="100%"
                         height="800"
                         style="border:1px solid #e2e8f0;"
