@@ -13,13 +13,46 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+	protected static function booted(): void
+	{
+		static::retrieved(function (User $user) {
+			if (is_null($user->currentTeam)) {
+				logger("yes got here");
+				$team = Team::create([
+					'name'     => 'My team',
+					'owner_id' => $user->id,
+				]);
+				$user->teams()
+					->attach($team->id, ['role'=>'owner']);
+
+				$user->update(['current_team_id' => $team->id]);
+				$user->save();
+				$user->switchTeam($team);
+			}
+		});
+		static::created(function (User $user) {
+			if (is_null($user->currentTeam)) {
+				$team = Team::create([
+					'name'     => 'My team',
+					'owner_id' => auth()->id(),
+				]);
+				$user->teams()
+					->attach($team->id, ['role'=>'owner']);
+
+				$user->update(['current_team_id' => $team->id]);
+			}
+			// ...
+		});
+	}
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
+		'current_team_id',
         'name',
+		'nationality_id',
         'email',
         'password',
     ];
@@ -57,4 +90,28 @@ class User extends Authenticatable
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
     }
+
+	public function teams()
+	{
+		return $this->belongsToMany(Team::class)
+			->withPivot('role')
+			->withTimestamps();
+	}
+
+	public function ownedTeams()
+	{
+		return $this->hasMany(Team::class, 'owner_id');
+	}
+
+	public function currentTeam()
+	{
+		return $this->belongsTo(Team::class, 'current_team_id');
+	}
+
+	public function switchTeam(Team $team)
+	{
+		if ($this->teams->contains($team->id)) {
+			$this->update(['current_team_id' => $team->id]);
+		}
+	}
 }
