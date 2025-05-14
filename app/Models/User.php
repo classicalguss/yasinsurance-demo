@@ -34,7 +34,7 @@ class User extends Authenticatable
 			if (is_null($user->currentTeam)) {
 				$team = Team::create([
 					'name'     => 'My team',
-					'owner_id' => auth()->id(),
+					'owner_id' => auth()->user()->id(),
 				]);
 				$user->teams()
 					->attach($team->id, ['role'=>'owner']);
