@@ -10,7 +10,7 @@
                         height="800"
                         style="border:1px solid #e2e8f0;"
                         title="Bootstrap Insurance Demo"
-                        sandbox="allow-forms allow-scripts allow-same-origin"
+                        sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
                 ></iframe>
             </div>
 
