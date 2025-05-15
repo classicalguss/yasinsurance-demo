@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,17 @@ class Register extends Component
         $validated['password'] = Hash::make($validated['password']);
 
         event(new Registered(($user = User::create($validated))));
+
+		$team = Team::create([
+			'name'     => 'My team',
+			'owner_id' => $user->id,
+		]);
+		$user->teams()
+			->attach($team->id, ['role'=>'owner']);
+
+		$user->update(['current_team_id' => $team->id]);
+		$user->save();
+		$user->switchTeam($team);
 
         Auth::login($user);
 

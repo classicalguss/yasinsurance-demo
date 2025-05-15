@@ -15,34 +15,6 @@ class User extends Authenticatable
 
 	protected static function booted(): void
 	{
-		static::retrieved(function (User $user) {
-			if (is_null($user->currentTeam)) {
-				logger("yes got here");
-				$team = Team::create([
-					'name'     => 'My team',
-					'owner_id' => $user->id,
-				]);
-				$user->teams()
-					->attach($team->id, ['role'=>'owner']);
-
-				$user->update(['current_team_id' => $team->id]);
-				$user->save();
-				$user->switchTeam($team);
-			}
-		});
-		static::created(function (User $user) {
-			if (is_null($user->currentTeam)) {
-				$team = Team::create([
-					'name'     => 'My team',
-					'owner_id' => auth()->user()->id(),
-				]);
-				$user->teams()
-					->attach($team->id, ['role'=>'owner']);
-
-				$user->update(['current_team_id' => $team->id]);
-			}
-			// ...
-		});
 	}
     /**
      * The attributes that are mass assignable.
