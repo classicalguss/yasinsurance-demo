@@ -7,7 +7,7 @@
                 <iframe
                         src="https://staging.yasmina.ai/request-sme-policy"
                         width="100%"
-                        height="800"
+                        height="600"
                         style="border:1px solid #e2e8f0;"
                         title="Bootstrap Insurance Demo"
                         sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
