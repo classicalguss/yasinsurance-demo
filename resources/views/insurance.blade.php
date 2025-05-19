@@ -3,14 +3,12 @@
         <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
             <div class="mt-6 ms-2">
 
-                <livewire:insurance />
                 <iframe
-                        src="https://staging.yasmina.ai/request-sme-policy"
-                        width="100%"
-                        height="600"
-                        style="border:1px solid #e2e8f0;"
+                        src="{{ config('services.yasmina.base_uri') }}/request-sme-insurance"
+                        style="max-width: 1300px; width: 100%"
+                        height="800"
                         title="Bootstrap Insurance Demo"
-                        sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
+                        sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-popups"
                 ></iframe>
             </div>
 
