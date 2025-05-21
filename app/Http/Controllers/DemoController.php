@@ -35,7 +35,7 @@ class DemoController extends Controller
 			//Buy insurance
 			$response = Http::timeout(30)
 				->acceptJson()
-				->post(config('services.yasmina.base_api_uri') . '/oauth/token', [
+				->post(config('services.yasmina.base_api_url') . '/oauth/token', [
 					'grant_type'    => 'client_credentials',
 					'client_id'     => config('services.yasmina.client_id'),
 					'client_secret' => config('services.yasmina.client_secret'),
@@ -58,7 +58,7 @@ class DemoController extends Controller
 				$response = Http::timeout(30)
 					->withToken($responseJSON['access_token'])
 					->acceptJson()
-					->post(config('services.yasmina.base_api_uri') . '/api/v1/car/policies', $data);
+					->post(config('services.yasmina.base_api_url') . '/api/v1/car/policies', $data);
 			}
 		}
 
