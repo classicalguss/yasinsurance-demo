@@ -36,7 +36,7 @@ return [
     ],
 
 	'yasmina' => [
-		'base_api_uri'      => env('YASMINA_URL',      'https://staging.yasmina.ai'),
+		'base_api_uri'      => env('YASMINA_API_URL',      'https://staging.yasmina.ai'),
 		'base_uri'      => env('YASMINA_URL',      'https://staging.yasmina.ai'),
 		'client_id'     => env('YASMINA_CLIENT_ID'),
 		'client_secret' => env('YASMINA_CLIENT_SECRET'),
