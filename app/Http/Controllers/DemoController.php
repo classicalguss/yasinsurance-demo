@@ -58,7 +58,7 @@ class DemoController extends Controller
 				$response = Http::timeout(30)
 					->withToken($responseJSON['access_token'])
 					->acceptJson()
-					->post(config('services.yasmina.base_uri') . '/api/v1/car/policies', $data);
+					->post(config('services.yasmina.base_api_uri') . '/api/v1/car/policies', $data);
 			}
 		}
 
