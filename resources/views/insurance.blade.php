@@ -13,4 +13,3 @@
 
         </div>
     </div>
-</x-layouts.app>
