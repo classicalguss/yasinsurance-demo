@@ -22,6 +22,10 @@
     <a href="/car-checkout?sequence=972396060">
         <img src="/demo/aggregator/booking2.png" alt="Car Listing" id="carImage">
     </a>
+@elseif (request()->get('sequence') == "172256061")
+    <a href="/car-checkout?sequence=172256061">
+        <img src="/demo/aggregator/booking1.png" alt="Car Listing" id="carImage">
+    </a>
 @endif
 
 <script>

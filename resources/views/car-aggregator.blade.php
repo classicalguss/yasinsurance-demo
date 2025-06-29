@@ -456,6 +456,81 @@
                     </div>
                 </div>
             </div>
+        @else
+            <div class="m-hide" data-currency-processed="true">
+                <div class="ShopApply-module__stickyContainer" data-currency-processed="true">
+                    <div class="PaymentInfo-module__container ShopApply-module__desktopCarInfo"
+                         data-currency-processed="true"><strong data-currency-processed="true">تفاصيل السعر</strong>
+                        <div class="PaymentInfo-module__ImageName" data-currency-processed="true">
+                            <div class="PaymentInfo-module__imgContainer" data-currency-processed="true"><img
+                                        src="https://cdn.syarah.com/photos-thumbs/online-v1/0x300/online/posts/241399/orignal-1748559956-5_cut.jpg"
+                                        data-currency-processed="true"></div>
+                            <div class="PaymentInfo-module__titleContainer" data-currency-processed="true"><strong
+                                        data-currency-processed="true">ام جي 5 LUX 2022 </strong></div>
+                        </div>
+                        <div class="PaymentInfo-module__genralInfo" data-currency-processed="true">
+                            <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
+                                        data-currency-processed="true">قيمة السيارة</span><strong
+                                        id="payment-info_car-price" data-currency-processed="true">43,500<span
+                                            class="text-xl syarah-currency-icon" data-currency-processed="true"></span></strong>
+                                <p data-currency-processed="true">السعر يشمل الضريبة المضافة</p></div>
+                            <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
+                                        data-currency-processed="true">قيمة المضافة على الخدمات</span><strong
+                                        id="payment-info_vat-price" data-currency-processed="true">135.00<span
+                                            class="text-xl syarah-currency-icon" data-currency-processed="true"></span></strong>
+                                <p data-currency-processed="true">نسبة القيمة المضافة خاضعة للتعديل بموجب القانون</p>
+                            </div>
+                            <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
+                                        data-currency-processed="true">نقل ملكية</span><strong
+                                        id="payment-info_registration-fees" data-currency-processed="true">850 <span
+                                            class="text-xl syarah-currency-icon" data-currency-processed="true"></span></strong>
+                            </div>
+                            <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
+                                        data-currency-processed="true">كلفة الشحن</span><strong
+                                        id="payment-info_shipping-fees" data-currency-processed="true">200 <span
+                                            class="text-xl syarah-currency-icon" data-currency-processed="true"></span></strong>
+                            </div>
+                            <div id="insurance-wrapper" class="PaymentInfo-module__flx hidden"
+                                 data-currency-processed="true">
+                                <span>التأمين</span>
+                                <strong><strong id="insurance-price">5700</strong><span
+                                            class="text-xl syarah-currency-icon"></span></strong>
+                                <p data-currency-processed="true">نسبة القيمة المضافة خاضعة للتعديل بموجب القانون</p>
+                            </div>
+                            <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
+                                        data-currency-processed="true">ضمان سيارة <p
+                                            class="PaymentInfo-module__smlNotesss" data-currency-processed="true"> سنة
+                                        او 20 الف كم </p></span><strong class="PaymentInfo-module__freeTag"
+                                                                        data-currency-processed="true">
+                                    <div class="PaymentInfo-module__freeTag" data-currency-processed="true">مجانا
+                                        <div class="PaymentInfo-module__oldPrice" data-currency-processed="true">1,000
+                                            <span class="syarah-currency-icon" data-currency-processed="true"></span>
+                                        </div>
+                                    </div>
+                                </strong></div>
+                            <div class="PaymentInfo-module__flx PaymentInfo-module__totalRow "
+                                 data-currency-processed="true"><span data-currency-processed="true">المبلغ
+                                    الإجمالي</span><strong id="payment-info_total-price" data-currency-processed="true">
+                                    <strong
+                                            id="total-price">26,485.00</strong><span
+                                            class="!text-2xl syarah-currency-icon"
+                                            data-currency-processed="true"></span></strong></div>
+                            <div class="PaymentInfo-module__flx PaymentInfo-module__ArboonRow"
+                                 data-currency-processed="true">
+                                <div class="PaymentInfo-module__colFlex" data-currency-processed="true"><span
+                                            data-currency-processed="true">عربون من قيمة السيارة</span>
+                                    <p data-currency-processed="true">هذا العربون مسترد بالكامل حتى مرحلة تسجيل السيارة،
+                                        وسيتم خصم العربون من المبلغ الإجمالي.</p></div>
+                                <strong id="payment-info_arboun-fees" data-currency-processed="true">500<span
+                                            class="!text-2xl syarah-currency-icon"
+                                            data-currency-processed="true"></span><br
+                                            data-currency-processed="true"><span class="PaymentInfo-module__note"
+                                                                                 data-currency-processed="true">مستردة</span></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endif
     </div>
 </main>
@@ -466,11 +541,12 @@
             echo 26485.00;
 		else if ($sequence == "972396060" )
             echo 47685.00;
+		else if ($sequence == "172256061" )
+            echo 44685.00;
     @endphp
 
-    console.log(initialTotalPrice);
-
-    let totalPrice;
+        let
+    totalPrice;
     document.querySelectorAll('input[name="insurance_option"]').forEach((elem) => {
         elem.addEventListener("change", function () {
             // Hide all sections first
