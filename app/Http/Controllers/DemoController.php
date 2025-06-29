@@ -9,6 +9,60 @@ use Illuminate\Support\Str;
 class DemoController extends Controller
 {
     //
+
+	public function aggregator(Request $request) {
+		$authResponse = Http::timeout(5)
+			->acceptJson()
+			->post(config('services.yasmina.base_api_url') . '/oauth/token', [
+				'grant_type'    => 'client_credentials',
+				'client_id'     => config('services.yasmina.client_id'),
+				'client_secret' => config('services.yasmina.client_secret'),
+			]);
+		$insurances = [];
+		$tplInsurances = [];
+		if ($authResponse->successful()) {
+
+			$data = [
+				'owner_id'            => '1234567890',
+				'car_sequence_number' => '987654321',
+				'car_year'   => '2025',
+				'car_price'        => 116185.00,
+				'insurance_type' => 'comp'
+			];
+
+			$authResponseJSON = $authResponse->json();
+
+			// (3) Fire the POST
+			$response = Http::timeout(5)
+				->withToken($authResponseJSON['access_token'])
+				->acceptJson()
+				->post(config('services.yasmina.base_api_url') . '/api/v1/car/insurance-aggregator', $data);
+			if ($response->successful()) {
+				$insurances = $response->json();
+			}
+
+			$data = [
+				'owner_id'            => '1234567890',
+				'car_sequence_number' => '987654321',
+				'car_year'   => '2025',
+				'car_price'        => 116185.00,
+				'insurance_type' => 'TPL'
+			];
+
+			// (3) Fire the POST
+			$response = Http::timeout(5)
+				->withToken($authResponseJSON['access_token'])
+				->acceptJson()
+				->post(config('services.yasmina.base_api_url') . '/api/v1/car/insurance-aggregator', $data);
+			if ($response->successful()) {
+				$tplInsurances = $response->json();
+			}
+		}
+		return view('car-aggregator', [
+			'insurances' => $insurances,
+			'tplInsurances' => $tplInsurances
+		]);
+	}
 	public function checkout(Request $request)
 	{
 		// get the selected key and human-readable label

@@ -42,6 +42,20 @@ Route::get('/car-insurance', function() {
 	return view('car-demo');
 });
 
+Route::get('/car-listing', function() {
+	return view('car-listing');
+});
+
+Route::get('/car-checkout', function() {
+	return view('car-checkout');
+});
+
+Route::get('/car-booking', function() {
+	return view('car-booking');
+});
+
+Route::get('/car-aggregator', [DemoController::class, 'aggregator']);
+
 Route::post('/checkout', [DemoController::class, 'checkout'])->name('checkout');
 
 
