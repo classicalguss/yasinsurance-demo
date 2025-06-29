@@ -217,29 +217,20 @@
                             data-currency-processed="true">الدفع</span></div>
                 <div class="ShopApplyForm-module__container " data-currency-processed="true">
                     <span>احصل على تغطية فورية لمركبتك أثناء إتمام الطلب</span>
-                    <div class="flex">
+                    <div class="flex gap-2">
                         <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
                                     type="radio" name="insurance_option" checked="" value="comp">
-                            <span
-                                    class="ShopApplyForm-module__boxDummy"
-                                    data-currency-processed="true"></span>
                             <span
                                     data-currency-processed="true">تأمين شامل</span></label>
                         <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
                                     type="radio" name="insurance_option" value="tpl">
                             <span
-                                    class="ShopApplyForm-module__boxDummy"
-                                    data-currency-processed="true"></span>
-                            <span
                                     data-currency-processed="true">تأمين ضد الغير</span></label>
                         <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
                                     type="radio" name="insurance_option" value="no_insurance">
-                            <span
-                                    class="ShopApplyForm-module__boxDummy"
-                                    data-currency-processed="true"></span>
                             <span
                                     data-currency-processed="true">لا اريد الحصول على تأمين</span>
                         </label>
