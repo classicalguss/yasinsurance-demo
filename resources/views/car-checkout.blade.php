@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Image Map Working Example</title>
+    <title>سيارات للبيع في السعودية | موقع سيارة</title>
     <style>
         img {
             max-width: 100%;
