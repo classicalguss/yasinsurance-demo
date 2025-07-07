@@ -10,6 +10,15 @@ class DemoController extends Controller
 {
     //
 
+	public function testingWebhookCall(Request $request) {
+
+		logger($request->headers);
+		logger($request->all());
+		return response()->json([
+			'status' => 'success'
+		]);
+	}
+
 	public function aggregator(Request $request) {
 		$authResponse = Http::timeout(5)
 			->acceptJson()

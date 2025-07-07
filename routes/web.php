@@ -57,6 +57,7 @@ Route::get('/car-booking', function() {
 Route::get('/car-aggregator', [DemoController::class, 'aggregator']);
 
 Route::post('/checkout', [DemoController::class, 'checkout'])->name('checkout');
+Route::post('/testing-webhook-call', [DemoController::class, 'testingWebhookCall']);
 
 
 require __DIR__.'/auth.php';
