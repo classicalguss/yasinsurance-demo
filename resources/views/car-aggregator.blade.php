@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk4.css') }}">
     <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk5.css') }}">
     <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk6.css') }}">
+    <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk7.css') }}">
     <link rel="preload" as="font"
           href="https://fonts.gstatic.com/s/cairo/v28/SLXVc1nY6HkvangtZmpQdkhzfH5lkSscRiyS8p4_RA.woff2"
           type="font/woff2" crossorigin="anonymous">
@@ -135,8 +136,14 @@
 
     </style>
     <style>
+        .insurance-option {
+            border-radius: 10px;
+            border-color: #d1d5db;
+            border-width: 1px;
+            border-style: solid;
+        }
         .selected {
-            border: 2px solid #154f9c;
+            border-color: #154f9c;
         }
 
         @font-face {
@@ -235,61 +242,75 @@
                                     data-currency-processed="true">لا اريد الحصول على تأمين</span>
                         </label>
                     </div>
-                    <div id="comp_section" class="flex justify-between gap-2 mt-6 insurances-option items-stretch"
+                    <div id="comp_section" class="justify-between gap-2 mt-6 insurances-option items-stretch"
                          data-currency-processed="true">
                         @foreach($insurances as $key => $insurance)
 
-                            <div style="width: 33.33333%">
-                                <a onclick="selectCard(this)" data-price="{{ $insurance['price'] }}"
-                                   href="javascript:void(0);"
-                                   class="flex flex-col justify-between items-center rounded-[4px] bg-white shadow-[0_0_12px_0_rgba(0,0,0,0.10)] p-3 h-full"
-                                   data-currency-processed="true">
-                                    <div class="flex flex-col items-center gap-3">
+                            <div
+                                    data-price="{{ $insurance['price'] }}"
+                                    onclick="selectCard(this)"
+                                    style="cursor: pointer;"
+
+                                    class="p-3 mt-2 insurance-option"
+                            >
+                                <div class="flex justify-between items-center gap-3">
+                                    <div class="flex items-center">
                                         <img src="{{ $insurance['logo'] }}" width="80" alt="السيارات المستعملة">
-                                        <strong class="text-[#484848] text-base font-bold leading-[24px]">{{ $insurance['name_ar'] }}</strong>
+
+                                        <strong class="text-[#484848] text-base font-bold">{{ $insurance['name_ar'] }}</strong>
+                                    </div>
+                                    <div class="flex items-center">
                                         <strong class="text-[#484848] text-base font-bold leading-[24px]">
-                                            <span>{{ $insurance['price'] }} <span
+                                            <span>{{ number_format($insurance['price']) }} <span
                                                         class="text-xl syarah-currency-icon"></span></span>
                                         </strong>
-                                        <div class="flex flex-col gap-2 mt-4">
-                                            @foreach($insurance['benefits']['ar'] as $benefit)
-                                                <span style="font-size: 12px"><img
-                                                            src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
-                                                            alt="icon" width="12" height="12"
-                                                            class="inline"> {{ $benefit }}</span>
-                                            @endforeach
-                                        </div>
+                                        <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
                                     </div>
-                                </a>
+                                </div>
+                                <div class="flex flex-col gap-2 mt-4 hidden benefits">
+                                    @foreach($insurance['benefits']['ar'] as $benefit)
+                                        <span style="font-size: 16px"><img
+                                                    src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
+                                                    alt="icon" width="16" height="16"
+                                                    class="inline"> {{ $benefit }}</span>
+                                    @endforeach
+                                </div>
                             </div>
                         @endforeach
                     </div>
-                    <div style="display: none" id="tpl_section"
-                         class="flex justify-between gap-2 mt-6 insurances-option"
+                    <div style="display: none" id="tpl_section" class="justify-between gap-2 mt-6 insurances-option items-stretch"
                          data-currency-processed="true">
                         @foreach($tplInsurances as $key => $insurance)
-                            <div style="width: 33.33333%">
-                                <a data-price="{{ $insurance['price'] }}" onclick="selectCard(this)"
-                                   href="javascript:void(0);"
-                                   class="@if ($key == 0) selected @endif flex flex-col justify-between items-center rounded-[4px] bg-white shadow-[0_0_12px_0_rgba(0,0,0,0.10)] p-3 h-full"
-                                   data-currency-processed="true">
-                                    <div class="flex flex-col items-center gap-3">
+
+                            <div
+                                    data-price="{{ $insurance['price'] }}"
+                                    onclick="selectCard(this)"
+                                    style="cursor: pointer;"
+
+                                    class="p-3 mt-2 insurance-option"
+                            >
+                                <div class="flex justify-between items-center gap-3">
+                                    <div class="flex items-center">
                                         <img src="{{ $insurance['logo'] }}" width="80" alt="السيارات المستعملة">
-                                        <strong class="text-[#484848] text-base font-bold leading-[24px]">{{ $insurance['name_ar'] }}</strong>
+
+                                        <strong class="text-[#484848] text-base font-bold">{{ $insurance['name_ar'] }}</strong>
+                                    </div>
+                                    <div class="flex items-center">
                                         <strong class="text-[#484848] text-base font-bold leading-[24px]">
-                                            <span>{{ $insurance['price'] }} <span
+                                            <span>{{ number_format($insurance['price']) }} <span
                                                         class="text-xl syarah-currency-icon"></span></span>
                                         </strong>
-                                        <div class="flex flex-col gap-2 mt-4">
-                                            @foreach($insurance['benefits']['ar'] as $benefit)
-                                                <span style="font-size: 12px"><img
-                                                            src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
-                                                            alt="icon" width="12" height="12"
-                                                            class="inline"> {{ $benefit }}</span>
-                                            @endforeach
-                                        </div>
+                                        <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
                                     </div>
-                                </a>
+                                </div>
+                                <div class="flex flex-col gap-2 mt-4 hidden benefits">
+                                    @foreach($insurance['benefits']['ar'] as $benefit)
+                                        <span style="font-size: 16px"><img
+                                                    src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
+                                                    alt="icon" width="16" height="16"
+                                                    class="inline"> {{ $benefit }}</span>
+                                    @endforeach
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -409,7 +430,7 @@
                             <div id="insurance-wrapper" class="PaymentInfo-module__flx hidden"
                                  data-currency-processed="true">
                                 <span>التأمين</span>
-                                <strong><strong id="insurance-price">5700</strong><span
+                                <strong><strong id="insurance-price">5,700</strong><span
                                             class="text-xl syarah-currency-icon"></span></strong>
                                 <p data-currency-processed="true">نسبة القيمة المضافة خاضعة للتعديل بموجب القانون</p>
                             </div>
@@ -485,7 +506,7 @@
                             <div id="insurance-wrapper" class="PaymentInfo-module__flx hidden"
                                  data-currency-processed="true">
                                 <span>التأمين</span>
-                                <strong><strong id="insurance-price">5700</strong><span
+                                <strong><strong id="insurance-price">5,700</strong><span
                                             class="text-xl syarah-currency-icon"></span></strong>
                                 <p data-currency-processed="true">نسبة القيمة المضافة خاضعة للتعديل بموجب القانون</p>
                             </div>
@@ -537,8 +558,6 @@
             echo 44685.00;
     @endphp
 
-        let
-    totalPrice;
     document.querySelectorAll('input[name="insurance_option"]').forEach((elem) => {
         elem.addEventListener("change", function () {
             // Hide all sections first
@@ -547,9 +566,9 @@
 
             // Show the selected section
             if (this.value === 'comp') {
-                document.getElementById('comp_section').style.display = 'flex';
+                document.getElementById('comp_section').style.display = 'block';
             } else if (this.value === 'tpl') {
-                document.getElementById('tpl_section').style.display = 'flex';
+                document.getElementById('tpl_section').style.display = 'block';
             } else if (this.value === 'no_insurance') {
                 totalPrice = initialTotalPrice;
                 document.getElementById('insurance-wrapper').classList.add('hidden');
@@ -561,18 +580,24 @@
 
     function selectCard(element, companyName) {
         // Remove 'selected' from all cards
-        document.querySelectorAll('.insurances-option a').forEach(card => card.classList.remove('selected'));
-        console.log(element);
+        document.querySelectorAll('.insurances-option div').forEach(card => card.classList.remove('selected'));
 
         // Add 'selected' to the clicked card
         element.classList.add('selected');
         let price = parseInt(element.dataset.price);
         document.getElementById('insurance-wrapper').classList.remove('hidden');
-        document.getElementById('insurance-price').textContent = price;
+        document.getElementById('insurance-price').textContent = price.toLocaleString();
 
         totalPrice = initialTotalPrice + price;
         document.getElementById('total-price').textContent = totalPrice.toLocaleString();
 
+    }
+
+    function toggleBenefits(el) {
+        const card = el.closest('.insurance-option');
+        const benefits = card.querySelector('.benefits');
+        const isHidden = benefits.classList.toggle('hidden');
+        el.classList.toggle('rotate-180', !isHidden);
     }
 </script>
 </body>

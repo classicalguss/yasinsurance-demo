@@ -43,6 +43,7 @@ Route::get('/car-insurance', function() {
 });
 
 Route::get('/car-listing', function() {
+//	return view('car-listing');
 	return view('car-listing');
 });
 
