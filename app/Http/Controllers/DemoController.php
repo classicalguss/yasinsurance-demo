@@ -45,7 +45,7 @@ class DemoController extends Controller
 			$response = Http::timeout(5)
 				->withToken($authResponseJSON['access_token'])
 				->acceptJson()
-				->post(config('services.yasmina.base_api_url') . '/api/v1/car/insurance-aggregator', $data);
+				->post(config('services.yasmina.base_api_url') . '/api/v1/car/products', $data);
 			if ($response->successful()) {
 				$insurances = $response->json();
 			}
@@ -62,7 +62,7 @@ class DemoController extends Controller
 			$response = Http::timeout(5)
 				->withToken($authResponseJSON['access_token'])
 				->acceptJson()
-				->post(config('services.yasmina.base_api_url') . '/api/v1/car/insurance-aggregator', $data);
+				->post(config('services.yasmina.base_api_url') . '/api/v1/car/products', $data);
 			if ($response->successful()) {
 				$tplInsurances = $response->json();
 			}
