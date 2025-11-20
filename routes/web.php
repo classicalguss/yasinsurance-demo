@@ -60,4 +60,11 @@ Route::get('/car-aggregator', [DemoController::class, 'aggregator']);
 Route::post('/checkout', [DemoController::class, 'checkout'])->name('checkout');
 
 
+Route::post('/buy-insurance', [DemoController::class, 'buyInsurance'])->name('buy-insurance');
+Route::get('buy-property', [DemoController::class, 'buyProperty'])->name('buy-property');
+
+Route::get('/cardetail/{slug}', function ($slug) {
+	// Here you can redirect anywhere you want
+	return redirect()->away('/car-booking?sequence=872396020');
+});
 require __DIR__.'/auth.php';

@@ -8,7 +8,74 @@ use Illuminate\Support\Str;
 
 class DemoController extends Controller
 {
-    //
+	public function buyInsurance()
+	{
+		$authResponse = Http::timeout(30)
+			->acceptJson()
+			->post( config('services.yasmina.base_api_url'). '/oauth/token', [
+				'grant_type' => 'client_credentials',
+				'client_id' => env('RER_CLIENT'),
+				'client_secret' => env('RER_SECRET'),
+			]);
+
+		if ($authResponse->successful()) {
+			$data = [
+				"insurance_provider" => "walaa",
+				"personal_details" => [
+					"email" => "ghassan@yasmina.ai",
+					"gender" => "M",
+					"name" => "Ghassan Barghouti",
+					"phone_number" => "+962797531543",
+					"birthdate" => "1988-04-20",
+					"nationality" => "JO",
+					"nationality_id" => "9881052027",
+				],
+				"building_details" => [
+					"building_age" => 20,
+					"building_type" => "villa",
+					"apartment_size" => 200,
+				],
+				"address" => [
+					"street_name" => "Sweilmeh Street",
+					"district_name" => "Tlaa al Ali",
+					"city_name" => "Riyadh",
+					"additional_number" => "1",
+					"zip_code" => "11193",
+					"unit_number" => "1",
+					"building_number" => "1",
+				],
+				"property_cost" => 500000,
+				"content_cost" => 100000,
+				"has_agreed_to_terms_and_conditions" => true,
+			];
+
+			$response = Http::timeout(30)
+				->withToken($authResponse->json()['access_token'])
+				->acceptJson()
+				->post(config('services.yasmina.base_api_url') . '/api/v1/property/policies', $data);
+
+			if ($response->successful()) {
+				return response()->json([
+					'success' => true,
+					'paymentUrl' => $response->json()['payment_link']
+				]);
+			}
+			return response()->json([
+				'success' => false,
+				'message' => $response->json()['message']
+			], $response->status());
+		}
+
+		return response()->json([
+			'success' => false,
+			'message' => $authResponse->json()['message']
+		], $authResponse->status());
+	}
+
+	public function buyProperty() {
+
+		return view('property-demo');
+	}
 
 	public function testingWebhookCall(Request $request) {
 
