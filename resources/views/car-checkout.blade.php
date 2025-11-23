@@ -25,6 +25,20 @@
             unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EFD-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
         }
 
+        .loader {
+            border: 3px solid #fff;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 0.6s linear infinite;
+            display: inline-block;
+            margin-left: 8px;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
         /* latin-ext */
         @font-face {
             font-family: 'Cairo';
@@ -244,13 +258,20 @@
                                              data-currency-processed="true">
                                             <div class="InputPhoneNumber-module__inputWrapper "
                                                  data-currency-processed="true">
-                                                <div class="InputPhoneNumber-module__inputContainer "
-                                                     data-currency-processed="true"><label
-                                                            class="InputPhoneNumber-module__label"
-                                                            data-currency-processed="true">رقم الجوال</label><input
-                                                            type="text" inputmode="numeric" pattern="[0-9]*"
-                                                            class="InputPhoneNumber-module__inputField" maxlength="10"
-                                                            value="" data-currency-processed="true"></div>
+                                                <div class="InputPhoneNumber-module__inputContainer" data-currency-processed="true">
+                                                    <input
+                                                            id="phoneInput"
+                                                            type="tel"
+                                                            inputmode="numeric"
+                                                            pattern="[0-9]*"
+                                                            class="InputPhoneNumber-module__inputField"
+                                                            maxlength="10"
+                                                            placeholder="رقم الجوال"
+                                                            dir="rtl"
+                                                            value="0533478218"
+                                                            data-currency-processed="true"
+                                                    >
+                                                </div>
                                             </div>
                                         </div>
                                         <label class="ShopApplyForm-module__whtsFlx"
@@ -310,12 +331,17 @@
                                         السيارة، وسيتم خصم العربون من المبلغ الإجمالي.</p>
                                     <div class="ShopApplyForm-module__contBtnContainer" data-currency-processed="true">
                                         <button type="button"
-                                                onclick="window.location='/car-aggregator?sequence=872396020'"
-                                                class="greenBtn" data-currency-processed="true"><strong
-                                                    data-currency-processed="true">اكمل لدفع العربون</strong><strong
-                                                    data-currency-processed="true">500<span
-                                                        class="text-lg syarah-currency-icon"
-                                                        data-currency-processed="true"></span></strong></button>
+                                                onclick="proceedWithOtp()"
+                                                class="greenBtn"
+                                                id="payBtn"
+                                                data-order-id="123456"
+                                                data-currency-processed="true">
+                                            <strong data-currency-processed="true">اكمل لدفع العربون</strong>
+                                            <strong data-currency-processed="true">
+                                                500
+                                                <span class="text-lg syarah-currency-icon" data-currency-processed="true"></span>
+                                            </strong>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -408,5 +434,186 @@
     </div>
 </div>
 
+<div id="otpModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+">
+    <div style="
+        background:white;
+        padding:20px;
+        border-radius:8px;
+        max-width:320px;
+        width:90%;
+        text-align:center;
+        direction:rtl;
+    ">
+        <h3 style="margin-bottom:12px;">أدخل رمز التحقق</h3>
+        <p style="font-size:14px; margin-bottom:10px;">
+            تم إرسال رمز التحقق إلى رقم الجوال المسجل.
+        </p>
+
+        <input type="text"
+               id="otpInput"
+               maxlength="6"
+               style="width:100%; padding:10px; font-size:16px; text-align:center; margin-bottom:12px;">
+
+        <div style="display:flex; gap:8px; justify-content:center;">
+            <button type="button"
+                    onclick="submitOtp()"
+                    style="padding:8px 16px; border:none; border-radius:4px; background:#16a34a; color:#fff; cursor:pointer;">
+                تأكيد
+            </button>
+            <button type="button"
+                    onclick="closeOtpModal()"
+                    style="padding:8px 16px; border:none; border-radius:4px; background:#e5e7eb; cursor:pointer;">
+                إلغاء
+            </button>
+        </div>
+
+        <div id="otpError" style="color:#b91c1c; font-size:13px; margin-top:8px; display:none;"></div>
+    </div>
+</div>
+
 </body>
+<script>
+    async function proceedWithOtp() {
+        const btn = document.getElementById('payBtn');
+
+
+        const input = document.getElementById('phoneInput');
+
+        let phone = input.value.trim();
+
+        console.log(phone);
+        // Basic validation
+        if (phone.length !== 10 || !phone.startsWith("05")) {
+            alert("يرجى إدخال رقم جوال صحيح يبدأ بـ 05.");
+            return;
+        }
+
+        // Convert "05XXXXXXXX" → "+9665XXXXXXXX"
+        const phoneFormatted = "+966" + phone.substring(1);
+
+        console.log("Sending phone:", phoneFormatted);
+        // read any data you need (adjust names as you like)
+        const orderId  = btn.getAttribute('data-order-id');
+
+        // loading state
+        btn.disabled = true;
+
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `
+        <span>جاري إرسال رمز التحقق...</span>
+        <span class="loader"></span>
+    `;
+
+        try {
+            // ✅ CHANGE THIS TO YOUR REAL ENDPOINT
+            const response = await fetch('/send-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    // If you're on Laravel Blade and need CSRF:
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                })
+            });
+
+            if (response.status === 204) {
+                showOtpModal();
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                return;
+            }
+
+            // 🚨 Anything else = error
+            alert("لم يتم إرسال رمز التحقق، الرجاء المحاولة مرة أخرى.");
+
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+
+        } catch (error) {
+            console.error(error);
+            alert('تعذر الاتصال بالخادم، الرجاء المحاولة لاحقاً.');
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+
+    function showOtpModal() {
+        const modal = document.getElementById('otpModal');
+        const otpInput = document.getElementById('otpInput');
+        const otpError = document.getElementById('otpError');
+
+        modal.style.display = 'flex';
+        otpInput.value = '';
+        otpError.style.display = 'none';
+        otpInput.focus();
+    }
+
+    function closeOtpModal() {
+        const modal = document.getElementById('otpModal');
+        modal.style.display = 'none';
+    }
+
+    // This is just a stub – hook it to your verify-OTP API
+    async function submitOtp() {
+        const otpInput = document.getElementById('otpInput');
+        const otpError = document.getElementById('otpError');
+        const otp = otpInput.value.trim();
+
+        if (otp.length === 0) {
+            otpError.textContent = 'الرجاء إدخال رمز التحقق.';
+            otpError.style.display = 'block';
+            return;
+        }
+
+        otpError.style.display = 'none';
+
+        // ✅ CHANGE THIS TO YOUR REAL VERIFY ENDPOINT
+        try {
+            const response = await fetch('/get-quotations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    otp: otp,
+                })
+            });
+
+            if (!response.ok) {
+                // Handle 400, 422, 500, etc.
+                const errorData = await response.json().catch(() => ({}));
+
+                otpError.textContent =
+                    errorData.message ??
+                    errorData.error ??
+                    'حدث خطأ أثناء التحقق من الرمز.';
+
+                otpError.style.display = 'block';
+                return; // stop execution
+            }
+
+            const data = await response.json();
+            localStorage.setItem('quoteData', JSON.stringify(data));
+            window.location='/car-aggregator?sequence=872396020'
+
+        } catch (e) {
+            console.error(e);
+            otpError.textContent = 'حدث خطأ أثناء التحقق من الرمز.';
+            otpError.style.display = 'block';
+        }
+    }
+</script>
 </html>

@@ -56,6 +56,8 @@ Route::get('/car-booking', function() {
 });
 
 Route::get('/car-aggregator', [DemoController::class, 'aggregator']);
+Route::post('/send-otp', [DemoController::class, 'sendOtp']);
+Route::post('/get-quotations', [DemoController::class, 'getQuotations']);
 
 Route::post('/checkout', [DemoController::class, 'checkout'])->name('checkout');
 

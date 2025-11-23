@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk5.css') }}">
     <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk6.css') }}">
     <link rel="stylesheet" href="{{ asset('demo/aggregator/chunk7.css') }}">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.2/dist/cdn.min.js"></script>
+
     <link rel="preload" as="font"
           href="https://fonts.gstatic.com/s/cairo/v28/SLXVc1nY6HkvangtZmpQdkhzfH5lkSscRiyS8p4_RA.woff2"
           type="font/woff2" crossorigin="anonymous">
@@ -211,7 +213,8 @@
         </ul>
     </div>
 </header>
-<main class="CheckOut" data-currency-processed="true">
+<main x-data="quotesPage" class="CheckOut" data-currency-processed="true">
+
     <div class="container ShopApply-module__container" data-currency-processed="true">
         <div data-currency-processed="true">
             <button class="CancelButton-module__button ShopApply-module__CancelButton m-hide"
@@ -232,9 +235,14 @@
                                     data-currency-processed="true">تأمين شامل</span></label>
                         <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
+                                    type="radio" name="insurance_option" value="tpl_plus">
+                            <span
+                                    data-currency-processed="true">تأمين ضد الغير بلس</span></label>
+                        <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
+                            <input
                                     type="radio" name="insurance_option" value="tpl">
                             <span
-                                    data-currency-processed="true">تأمين ضد الغير</span></label>
+                                    data-currency-processed="true">تأمين ضد الغير </span></label>
                         <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
                                     type="radio" name="insurance_option" value="no_insurance">
@@ -244,75 +252,132 @@
                     </div>
                     <div id="comp_section" class="justify-between gap-2 mt-6 insurances-option items-stretch"
                          data-currency-processed="true">
-                        @foreach($insurances as $key => $insurance)
+                        <div class="quotes-list" x-show="quotesByType.comprehensive">
+                            <template x-for="quote in quotesByType.comprehensive" :key="quote.quote_reference_id">
+                                <div
+                                        :data-price="quote.prices[0].total"
+                                        onclick="selectCard(this)"
+                                        style="cursor: pointer;"
 
-                            <div
-                                    data-price="{{ $insurance['price'] }}"
-                                    onclick="selectCard(this)"
-                                    style="cursor: pointer;"
+                                        class="p-3 mt-2 insurance-option"
+                                >
+                                    <div class="flex justify-between items-center gap-3">
+                                        <div class="flex items-center">
+                                            <img :src="quote.company_logo" width="80" height="auto" alt="السيارات المستعملة">
 
-                                    class="p-3 mt-2 insurance-option"
-                            >
-                                <div class="flex justify-between items-center gap-3">
-                                    <div class="flex items-center">
-                                        <img src="{{ $insurance['logo'] }}" width="80" alt="السيارات المستعملة">
+                                            <div>
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.company_name"></strong>
+                                                <br />
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.fix_type ? quote.fix_type.charAt(0).toUpperCase() + quote.fix_type.slice(1) : ''"
+                                                ></strong>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <strong class="text-[#484848] text-base font-bold leading-[24px]">
+                                                <span x-text="quote.prices[0].total"></span> <span
 
-                                        <strong class="text-[#484848] text-base font-bold">{{ $insurance['name_ar'] }}</strong>
+                                                            class="text-xl syarah-currency-icon"></span>
+                                            </strong>
+                                            <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
+                                        </div>
                                     </div>
-                                    <div class="flex items-center">
-                                        <strong class="text-[#484848] text-base font-bold leading-[24px]">
-                                            <span>{{ number_format($insurance['price']) }} <span
-                                                        class="text-xl syarah-currency-icon"></span></span>
-                                        </strong>
-                                        <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
+                                    <div class="flex flex-col gap-2 mt-4 hidden benefits">
+                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
+                                            <span style="font-size: 16px" class="flex items-center gap-1"><img
+                                                        src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
+                                                        alt="icon" width="16" height="16"
+                                                        class="inline"> <span x-text="benefit.name"></span></span>
+                                        </template>
                                     </div>
                                 </div>
-                                <div class="flex flex-col gap-2 mt-4 hidden benefits">
-                                    @foreach($insurance['benefits']['ar'] as $benefit)
-                                        <span style="font-size: 16px"><img
-                                                    src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
-                                                    alt="icon" width="16" height="16"
-                                                    class="inline"> {{ $benefit }}</span>
-                                    @endforeach
+                            </template>
+                        </div>
+                    </div>
+                    <div style="display: none" id="tpl_plus_section" class="justify-between gap-2 mt-6 insurances-option items-stretch"
+                         data-currency-processed="true">
+                        <div class="quotes-list" x-show="quotesByType.tpl_plus">
+                            <template x-for="quote in quotesByType.tpl_plus" :key="quote.quote_reference_id">
+                                <div
+                                        :data-price="quote.prices[0].total"
+                                        onclick="selectCard(this)"
+                                        style="cursor: pointer;"
+
+                                        class="p-3 mt-2 insurance-option"
+                                >
+                                    <div class="flex justify-between items-center gap-3">
+                                        <div class="flex items-center">
+                                            <img :src="quote.company_logo" width="80" height="auto" alt="السيارات المستعملة">
+
+                                            <div>
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.company_name"></strong>
+                                                <br />
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.fix_type ? quote.fix_type.charAt(0).toUpperCase() + quote.fix_type.slice(1) : ''"
+                                                ></strong>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <strong class="text-[#484848] text-base font-bold leading-[24px]">
+                                                <span x-text="quote.prices[0].total"></span> <span
+
+                                                        class="text-xl syarah-currency-icon"></span>
+                                            </strong>
+                                            <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2 mt-4 hidden benefits">
+                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
+                                            <span style="font-size: 16px" class="flex items-center gap-1"><img
+                                                        src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
+                                                        alt="icon" width="16" height="16"
+                                                        class="inline"> <span x-text="benefit.name"></span></span>
+                                        </template>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            </template>
+                        </div>
                     </div>
                     <div style="display: none" id="tpl_section" class="justify-between gap-2 mt-6 insurances-option items-stretch"
                          data-currency-processed="true">
-                        @foreach($tplInsurances as $key => $insurance)
+                        <div class="quotes-list" x-show="quotesByType.tpl">
+                            <template x-for="quote in quotesByType.tpl" :key="quote.quote_reference_id">
+                                <div
+                                        :data-price="quote.prices[0].total"
+                                        onclick="selectCard(this)"
+                                        style="cursor: pointer;"
 
-                            <div
-                                    data-price="{{ $insurance['price'] }}"
-                                    onclick="selectCard(this)"
-                                    style="cursor: pointer;"
+                                        class="p-3 mt-2 insurance-option"
+                                >
+                                    <div class="flex justify-between items-center gap-3">
+                                        <div class="flex items-center">
+                                            <img :src="quote.company_logo" width="80" height="auto" alt="السيارات المستعملة">
 
-                                    class="p-3 mt-2 insurance-option"
-                            >
-                                <div class="flex justify-between items-center gap-3">
-                                    <div class="flex items-center">
-                                        <img src="{{ $insurance['logo'] }}" width="80" alt="السيارات المستعملة">
+                                            <div>
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.company_name"></strong>
+                                                <br />
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.fix_type ? quote.fix_type.charAt(0).toUpperCase() + quote.fix_type.slice(1) : ''"
+                                                ></strong>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <strong class="text-[#484848] text-base font-bold leading-[24px]">
+                                                <span x-text="quote.prices[0].total"></span> <span
 
-                                        <strong class="text-[#484848] text-base font-bold">{{ $insurance['name_ar'] }}</strong>
+                                                        class="text-xl syarah-currency-icon"></span>
+                                            </strong>
+                                            <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
+                                        </div>
                                     </div>
-                                    <div class="flex items-center">
-                                        <strong class="text-[#484848] text-base font-bold leading-[24px]">
-                                            <span>{{ number_format($insurance['price']) }} <span
-                                                        class="text-xl syarah-currency-icon"></span></span>
-                                        </strong>
-                                        <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
+                                    <div class="flex flex-col gap-2 mt-4 hidden benefits">
+                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
+                                            <span style="font-size: 16px" class="flex items-center gap-1"><img
+                                                        src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
+                                                        alt="icon" width="16" height="16"
+                                                        class="inline"> <span x-text="benefit.name"></span></span>
+                                        </template>
                                     </div>
                                 </div>
-                                <div class="flex flex-col gap-2 mt-4 hidden benefits">
-                                    @foreach($insurance['benefits']['ar'] as $benefit)
-                                        <span style="font-size: 16px"><img
-                                                    src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
-                                                    alt="icon" width="16" height="16"
-                                                    class="inline"> {{ $benefit }}</span>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -548,6 +613,74 @@
     </div>
 </main>
 <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('quotesPage', () => ({
+            data: null,
+            quotes: [],          // flat list (optional, still available)
+            quotesByType: {      // grouped lists
+                comprehensive: [],
+                tpl: [],
+                tpl_plus: [],
+            },
+            init() {
+                console.log("ok?");
+                const saved = localStorage.getItem('quoteData');
+                if (!saved) {
+                    console.warn('No quoteData found in localStorage');
+                    return;
+                }
+
+                // Full object (owner_id, email, quotes, etc.)
+                this.data = JSON.parse(saved);
+                console.log(this.data);
+
+                // Group quotes by type and calculate minPrice
+                this.quotesByType = this.data.quotes.reduce(
+                    (groups, q) => {
+                        const minPrice = q.prices.reduce(
+                            (min, p) => (p.total < min ? p.total : min),
+                            q.prices[0]?.total ?? 0
+                        );
+
+                        const rawType = (q.type || '').trim(); // "Comprehensive", "TPL", "TPL +"
+                        let key = 'tpl'; // default
+
+                        if (rawType === 'Comprehensive') {
+                            key = 'comprehensive';
+                        } else if (rawType === 'TPL +') {
+                            key = 'tpl_plus';
+                        } else if (rawType === 'TPL') {
+                            key = 'tpl';
+                        }
+
+                        const quoteWithMin = {
+                            ...q,
+                            minPrice,
+                            displayType: rawType,
+                        };
+
+                        groups[key].push(quoteWithMin);
+                        this.quotes.push(quoteWithMin); // keep flat list too
+
+                        return groups;
+                    },
+                    {
+                        comprehensive: [],
+                        tpl: [],
+                        tpl_plus: [],
+                    }
+                );
+            },
+            formatMoney(value) {
+                if (value == null) return '';
+                return value.toLocaleString('ar-SA', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            },
+        }));
+    });
+
     let initialTotalPrice = @php
         $sequence = request()->get('sequence');
         if ($sequence == "872396020")
@@ -562,11 +695,14 @@
         elem.addEventListener("change", function () {
             // Hide all sections first
             document.getElementById('comp_section').style.display = 'none';
+            document.getElementById('tpl_plus_section').style.display = 'none';
             document.getElementById('tpl_section').style.display = 'none';
 
             // Show the selected section
             if (this.value === 'comp') {
                 document.getElementById('comp_section').style.display = 'block';
+            } else if (this.value=== 'tpl_plus') {
+                document.getElementById('tpl_plus_section').style.display = 'block';
             } else if (this.value === 'tpl') {
                 document.getElementById('tpl_section').style.display = 'block';
             } else if (this.value === 'no_insurance') {
@@ -584,7 +720,7 @@
 
         // Add 'selected' to the clicked card
         element.classList.add('selected');
-        let price = parseInt(element.dataset.price);
+        let price = parseFloat(element.dataset.price);
         document.getElementById('insurance-wrapper').classList.remove('hidden');
         document.getElementById('insurance-price').textContent = price.toLocaleString();
 

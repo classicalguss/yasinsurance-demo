@@ -10,7 +10,7 @@ class DemoController extends Controller
 {
 	public function buyInsurance()
 	{
-		$authResponse = Http::timeout(30)
+		$authResponse = Http::timeout(180)
 			->acceptJson()
 			->post( config('services.yasmina.base_api_url'). '/oauth/token', [
 				'grant_type' => 'client_credentials',
@@ -49,7 +49,7 @@ class DemoController extends Controller
 				"has_agreed_to_terms_and_conditions" => true,
 			];
 
-			$response = Http::timeout(30)
+			$response = Http::timeout(180)
 				->withToken($authResponse->json()['access_token'])
 				->acceptJson()
 				->post(config('services.yasmina.base_api_url') . '/api/v1/property/policies', $data);
@@ -86,8 +86,73 @@ class DemoController extends Controller
 		]);
 	}
 
+	public function sendOtp(Request $request) {
+		$authResponse = Http::timeout(180)
+			->acceptJson()
+			->post(config('services.yasmina.base_api_url') . '/oauth/token', [
+				'grant_type'    => 'client_credentials',
+				'client_id'     => config('services.yasmina.client_id'),
+				'client_secret' => config('services.yasmina.client_secret'),
+			]);
+
+		if (! $authResponse->successful()) {
+			throw new \Exception("Unable to authenticate with Yasmina API");
+		}
+
+		$token = $authResponse->json('access_token');
+
+		set_time_limit(180); // allow 180 seconds
+		$otpResponse = Http::timeout(180)
+			->withToken($token)
+			->acceptJson()
+			->post(config('services.yasmina.base_api_url'). '/api/v1/car-comp/quote-otp', [
+				'email'    => $request->email ?? 'masoud@yasmina.ai',
+				'phone'    => $request->phone ?? '0533478218',
+				'owner_id' => $request->owner_id ?? '2528297837',
+			]);
+
+		if (! $otpResponse->successful()) {
+			throw new \Exception("Unable to send OTP, please try again later");
+		}
+
+		return response()->noContent();
+	}
+
+	public function getQuotations(Request $request) {
+		set_time_limit(180); // allow 180 seconds
+		$authResponse = Http::timeout(180)
+			->acceptJson()
+			->post(config('services.yasmina.base_api_url') . '/oauth/token', [
+				'grant_type'    => 'client_credentials',
+				'client_id'     => config('services.yasmina.client_id'),
+				'client_secret' => config('services.yasmina.client_secret'),
+			]);
+
+		if (! $authResponse->successful()) {
+			throw new \Exception("Unable to authenticate with Yasmina API");
+		}
+
+		$token = $authResponse->json('access_token');
+		$quoteResponse = Http::timeout(180)
+			->withToken($token)
+			->post(config('services.yasmina.base_api_url') . "/api/v1/car-comp/quote-requests", [
+				"email"                 => "masoud@yasmina.ai",
+				"owner_id"              => 2528297837,
+				"phone"                 => "0533478218",
+				"birthdate"             => "1988-12-01",
+				"car_sequence_number"   => 866904610,
+				"is_ownership_transfer" => true,
+				"current_car_owner_id"  => "7012703406",
+				"car_estimated_cost"    => 45000,
+				"car_model_year"        => 2024,
+				"otp"                   => $request->otp ?? '',
+			]);
+
+		return response()->json($quoteResponse->json(), $quoteResponse->status());
+	}
+
 	public function aggregator(Request $request) {
-		$authResponse = Http::timeout(5)
+		$authResponse = Http::timeout(180)
 			->acceptJson()
 			->post(config('services.yasmina.base_api_url') . '/oauth/token', [
 				'grant_type'    => 'client_credentials',
@@ -109,7 +174,7 @@ class DemoController extends Controller
 			$authResponseJSON = $authResponse->json();
 
 			// (3) Fire the POST
-			$response = Http::timeout(5)
+			$response = Http::timeout(180)
 				->withToken($authResponseJSON['access_token'])
 				->acceptJson()
 				->post(config('services.yasmina.base_api_url') . '/api/v1/car/products', $data);
@@ -126,7 +191,7 @@ class DemoController extends Controller
 			];
 
 			// (3) Fire the POST
-			$response = Http::timeout(5)
+			$response = Http::timeout(180)
 				->withToken($authResponseJSON['access_token'])
 				->acceptJson()
 				->post(config('services.yasmina.base_api_url') . '/api/v1/car/products', $data);
@@ -163,7 +228,7 @@ class DemoController extends Controller
 
 		if ($key != "no_coverage") {
 			//Buy insurance
-			$response = Http::timeout(30)
+			$response = Http::timeout(180)
 				->acceptJson()
 				->post(config('services.yasmina.base_api_url') . '/oauth/token', [
 					'grant_type'    => 'client_credentials',
@@ -185,7 +250,7 @@ class DemoController extends Controller
 				$responseJSON = $response->json();
 
 				// (3) Fire the POST
-				$response = Http::timeout(30)
+				$response = Http::timeout(180)
 					->withToken($responseJSON['access_token'])
 					->acceptJson()
 					->post(config('services.yasmina.base_api_url') . '/api/v1/car/policies', $data);
