@@ -15,6 +15,18 @@
           href="https://fonts.gstatic.com/s/cairo/v28/SLXVc1nY6HkvangtZmpQdkhzfH5lkSscQyyS8p4_RHH1.woff2"
           type="font/woff2" crossorigin="anonymous">
     <style>
+        .otp-btn-spinner {
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-top-color: transparent;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: otpSpin 0.6s linear infinite;
+        }
+
+        @keyframes otpSpin {
+            to { transform: rotate(360deg); }
+        }
         /* arabic */
         @font-face {
             font-family: 'Cairo';
@@ -464,9 +476,10 @@
 
         <div style="display:flex; gap:8px; justify-content:center;">
             <button type="button"
+                    id="otpConfirmBtn"
                     onclick="submitOtp()"
-                    style="padding:8px 16px; border:none; border-radius:4px; background:#16a34a; color:#fff; cursor:pointer;">
-                تأكيد
+                    style="padding:8px 16px; border:none; border-radius:4px; background:#16a34a; color:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                <span class="otp-confirm-text">تأكيد</span>
             </button>
             <button type="button"
                     onclick="closeOtpModal()"
@@ -569,6 +582,7 @@
     async function submitOtp() {
         const otpInput = document.getElementById('otpInput');
         const otpError = document.getElementById('otpError');
+        const btn = document.getElementById('otpConfirmBtn');
         const otp = otpInput.value.trim();
 
         if (otp.length === 0) {
@@ -578,6 +592,12 @@
         }
 
         otpError.style.display = 'none';
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `
+        <span class="otp-btn-spinner"></span>
+        <span>جاري التحقق...</span>
+    `;
 
         // ✅ CHANGE THIS TO YOUR REAL VERIFY ENDPOINT
         try {
@@ -613,6 +633,10 @@
             console.error(e);
             otpError.textContent = 'حدث خطأ أثناء التحقق من الرمز.';
             otpError.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+
         }
     }
 </script>
