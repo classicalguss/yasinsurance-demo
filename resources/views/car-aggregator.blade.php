@@ -255,7 +255,39 @@
                         <div class="quotes-list" x-show="quotesByType.comprehensive">
                             <template x-for="quote in quotesByType.comprehensive" :key="quote.quote_reference_id">
                                 <div
-                                        :data-price="quote.prices[0].total"
+                                        x-data="{
+            selectedBenefits: [],
+            selectedPriceId: quote.prices[0]?.quote_price_id ?? null,
+
+            get selectedPrice() {
+                return quote.prices.find(p => p.quote_price_id === this.selectedPriceId)
+                    ?? quote.prices[0];
+            },
+
+                    get basePrice() {
+                        return this.selectedPrice?.total ?? 0;
+                    },
+            get total() {
+                const extra = quote.benefits
+                    .filter(b => this.selectedBenefits.includes(b.quote_benefit_id))
+                    .reduce((sum, b) => sum + b.amount, 0);
+
+                return this.basePrice + extra;
+            },
+
+            init() {
+                // Watch benefit selections and trigger selectCard
+                this.$watch('selectedBenefits', () => {
+                    selectCard(this.$root);
+                });
+
+                this.$watch('selectedPriceId', () => {
+                    console.log('coming here?');
+                    selectCard(this.$root);
+                });
+            }
+        }"
+                                        :data-price="total"
                                         onclick="selectCard(this)"
                                         style="cursor: pointer;"
 
@@ -265,28 +297,73 @@
                                         <div class="flex items-center">
                                             <img :src="quote.company_logo" width="80" height="auto" alt="السيارات المستعملة">
 
-                                            <div>
-                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.company_name"></strong>
-                                                <br />
-                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.fix_type ? quote.fix_type.charAt(0).toUpperCase() + quote.fix_type.slice(1) : ''"
+                                            <div style="margin-right: 15px">
+                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.company_name_ar"></strong>
+                                                -
+                                                <strong
+                                                        class="text-[#484848] text-base font-bold"
+                                                        x-text="quote.fix_type === 'workshop'
+                                                        ? 'ورش'
+                                                        : quote.fix_type === 'Agency'
+                                                            ? 'وكالة'
+                                                            : quote.fix_type"
                                                 ></strong>
                                             </div>
                                         </div>
                                         <div class="flex items-center">
                                             <strong class="text-[#484848] text-base font-bold leading-[24px]">
-                                                <span x-text="quote.prices[0].total"></span> <span
+                                                <span x-text="total.toLocaleString()"></span> <span
 
                                                             class="text-xl syarah-currency-icon"></span>
                                             </strong>
                                             <x-tabler-circle-chevron-down class="chevron transition-transform duration-300" onclick="event.stopPropagation();toggleBenefits(this)" />
                                         </div>
                                     </div>
+                                    <div class="flex items-center">
+                                        <label class="text-sm text-gray-500 mb-1 me-2">قيمة التحمل:</label>
+                                        <select
+                                                x-model="selectedPriceId"
+                                                @click.stop
+                                                style="width: 50%; margin-inline-start: 20px"
+                                                class="border border-gray-300 rounded px-2 py-1 pl-6 text-sm ms-2"
+                                        >
+                                            <template x-for="price in quote.prices" :key="price.quote_price_id">
+                                                <option
+                                                        :value="price.quote_price_id"
+                                                        x-text="price.deductible.toLocaleString() + ' ' + 'ريال'"
+                                                ></option>
+                                            </template>
+                                        </select>
+                                    </div>
                                     <div class="flex flex-col gap-2 mt-4 hidden benefits">
                                         <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
-                                            <span style="font-size: 16px" class="flex items-center gap-1"><img
-                                                        src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
-                                                        alt="icon" width="16" height="16"
-                                                        class="inline"> <span x-text="benefit.name"></span></span>
+                                            <template x-if="benefit.amount == 0">
+                                                <div class="flex items-center gap-1 text-[16px]">
+                                                    <input
+                                                            type="checkbox"
+                                                            class="w-4 h-4"
+                                                            checked="checked"
+                                                            disabled
+                                                    >
+                                                    <span class="text-sm" x-text="benefit.name_ar"></span>
+                                                </div>
+                                            </template>
+                                        </template>
+                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
+                                            <template x-if="benefit.amount > 0">
+                                            <div class="flex items-center gap-1 text-[16px]">
+                                                <input
+                                                        type="checkbox"
+                                                        class="w-4 h-4"
+                                                        :value="benefit.quote_benefit_id"
+                                                        x-model="selectedBenefits"
+                                                        @click.stop
+                                                >
+                                                <span class="text-sm" x-text="benefit.name_ar"></span> - <span class="text-sm" x-text="benefit.amount"></span> <span
+
+                                                        class="text-xl syarah-currency-icon"></span>
+                                            </div>
+                                            </template>
                                         </template>
                                     </div>
                                 </div>
@@ -311,7 +388,13 @@
                                             <div>
                                                 <strong class="text-[#484848] text-base font-bold" x-text="quote.company_name"></strong>
                                                 <br />
-                                                <strong class="text-[#484848] text-base font-bold" x-text="quote.fix_type ? quote.fix_type.charAt(0).toUpperCase() + quote.fix_type.slice(1) : ''"
+                                                <strong
+                                                        class="text-[#484848] text-base font-bold"
+                                                        x-text="quote.fix_type === 'workshop'
+                                            ? 'ورش'
+                                            : quote.fix_type === 'agency'
+                                                ? 'وكالة'
+                                                : ''"
                                                 ></strong>
                                             </div>
                                         </div>
@@ -623,7 +706,6 @@
                 tpl_plus: [],
             },
             init() {
-                console.log("ok?");
                 const saved = localStorage.getItem('quoteData');
                 if (!saved) {
                     console.warn('No quoteData found in localStorage');
@@ -726,7 +808,6 @@
 
         totalPrice = initialTotalPrice + price;
         document.getElementById('total-price').textContent = totalPrice.toLocaleString();
-
     }
 
     function toggleBenefits(el) {
