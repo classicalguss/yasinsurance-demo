@@ -148,6 +148,22 @@ class DemoController extends Controller
 				"otp"                   => $request->otp ?? '',
 			]);
 
+		if ($quoteResponse->status() === 400) {
+
+			$fallbackResponse = Http::timeout(180)
+				->withToken($token)
+				->get(config('services.yasmina.base_api_url') . '/api/v1/car-comp/quote-requests');
+
+			$quotes = $fallbackResponse->json('data', []);
+			$quote = $quotes[0];
+
+			$fallbackQuote = Http::timeout(180)
+				->withToken($token)
+				->get(config('services.yasmina.base_api_url') . '/api/v1/car-comp/quote-requests/'.$quote['id']);
+
+			return response()->json($fallbackQuote->json());
+		}
+
 		return response()->json($quoteResponse->json(), $quoteResponse->status());
 	}
 
