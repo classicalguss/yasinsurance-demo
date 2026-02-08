@@ -111,6 +111,7 @@ class DemoController extends Controller
 				'owner_id' => $request->owner_id ?? '2528297837',
 			]);
 
+		logger($otpResponse->json());
 		if (! $otpResponse->successful()) {
 			throw new \Exception("Unable to send OTP, please try again later");
 		}
