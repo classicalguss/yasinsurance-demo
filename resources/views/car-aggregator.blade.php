@@ -336,21 +336,18 @@
                                         </select>
                                     </div>
                                     <div class="flex flex-col gap-2 mt-4 hidden benefits">
-                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
-                                            <template x-if="benefit.amount == 0">
-                                                <div class="flex items-center gap-1 text-[16px]">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="w-4 h-4"
-                                                            checked="checked"
-                                                            disabled
-                                                    >
-                                                    <span class="text-sm" x-text="benefit.name_ar"></span>
-                                                </div>
-                                            </template>
+                                        <template x-for="benefit in [...new Map(quote.benefits.filter(b => b.amount == 0).map(b => [b.name_ar, b])).values()]" :key="benefit.quote_benefit_id">
+                                            <div class="flex items-center gap-1 text-[16px]">
+                                                <input
+                                                        type="checkbox"
+                                                        class="w-4 h-4"
+                                                        checked="checked"
+                                                        disabled
+                                                >
+                                                <span class="text-sm" x-text="benefit.name_ar"></span>
+                                            </div>
                                         </template>
-                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
-                                            <template x-if="benefit.amount > 0">
+                                        <template x-for="benefit in [...new Map(quote.benefits.filter(b => b.amount > 0).map(b => [b.name_ar, b])).values()]" :key="benefit.quote_benefit_id">
                                             <div class="flex items-center gap-1 text-[16px]">
                                                 <input
                                                         type="checkbox"
@@ -363,7 +360,6 @@
 
                                                         class="text-xl syarah-currency-icon"></span>
                                             </div>
-                                            </template>
                                         </template>
                                     </div>
                                 </div>
@@ -408,11 +404,11 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-2 mt-4 hidden benefits">
-                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
+                                        <template x-for="benefit in [...new Map(quote.benefits.map(b => [b.name_ar, b])).values()]" :key="benefit.quote_benefit_id">
                                             <span style="font-size: 16px" class="flex items-center gap-1"><img
                                                         src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
                                                         alt="icon" width="16" height="16"
-                                                        class="inline"> <span x-text="benefit.name"></span></span>
+                                                        class="inline"> <span x-text="benefit.name_ar"></span></span>
                                         </template>
                                     </div>
                                 </div>
@@ -451,11 +447,11 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-2 mt-4 hidden benefits">
-                                        <template x-for="(benefit, index) in quote.benefits" :key="benefit.quote_benefit_id">
+                                        <template x-for="benefit in [...new Map(quote.benefits.map(b => [b.name_ar, b])).values()]" :key="benefit.quote_benefit_id">
                                             <span style="font-size: 16px" class="flex items-center gap-1"><img
                                                         src="https://cdn-frontend-r2.syarah.com/prod/assets/images/post_check_mark.svg"
                                                         alt="icon" width="16" height="16"
-                                                        class="inline"> <span x-text="benefit.name"></span></span>
+                                                        class="inline"> <span x-text="benefit.name_ar"></span></span>
                                         </template>
                                     </div>
                                 </div>
