@@ -228,17 +228,17 @@
                 <div class="ShopApplyForm-module__container " data-currency-processed="true">
                     <span>احصل على تغطية فورية لمركبتك أثناء إتمام الطلب</span>
                     <div class="flex gap-2">
-                        <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
+                        <label x-show="quotesByType.comprehensive.length > 0" class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
-                                    type="radio" name="insurance_option" checked="" value="comp">
+                                    type="radio" name="insurance_option" value="comp">
                             <span
                                     data-currency-processed="true">تأمين شامل</span></label>
-                        <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
+                        <label x-show="quotesByType.tpl_plus.length > 0" class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
                                     type="radio" name="insurance_option" value="tpl_plus">
                             <span
                                     data-currency-processed="true">تأمين ضد الغير بلس</span></label>
-                        <label class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
+                        <label x-show="quotesByType.tpl.length > 0" class="ShopApplyForm-module__whtsFlx" data-currency-processed="true">
                             <input
                                     type="radio" name="insurance_option" value="tpl">
                             <span
@@ -748,6 +748,20 @@
                         tpl_plus: [],
                     }
                 );
+
+                // Auto-select the first available insurance type
+                this.$nextTick(() => {
+                    const order = ['comp', 'tpl_plus', 'tpl'];
+                    const keys = { comp: 'comprehensive', tpl_plus: 'tpl_plus', tpl: 'tpl' };
+                    const first = order.find(v => this.quotesByType[keys[v]].length > 0);
+                    if (first) {
+                        const radio = document.querySelector(`input[name="insurance_option"][value="${first}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.dispatchEvent(new Event('change'));
+                        }
+                    }
+                });
             },
             formatMoney(value) {
                 if (value == null) return '';
