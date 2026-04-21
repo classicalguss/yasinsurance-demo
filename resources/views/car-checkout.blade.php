@@ -365,7 +365,7 @@
                                  data-currency-processed="true"><strong>تفاصيل السعر</strong>
                                 <div class="PaymentInfo-module__ImageName">
                                     <div class="PaymentInfo-module__imgContainer"><img
-                                                src="https://cdn.syarah.com/photos-thumbs/online-v1/0x300/online/posts/237971/orignal-1740076317-60_cut.jpg">
+                                                src="/orignal-1749905793-689_cut.webp">
                                     </div>
                                     <div class="PaymentInfo-module__titleContainer"><strong>شيري اريزو 5 Comfort
                                             2023 </strong></div>
