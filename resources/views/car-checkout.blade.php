@@ -225,10 +225,10 @@
                  style="opacity: 1;"><span class=" Header-module__backFlex" data-currency-processed="true"><span
                             class="m-show Header-module__mobileBackBlueArr" data-currency-processed="true"><img
                                 src="https://cdn-frontend-r2.syarah.com/prod/assets/images/mobileBackBlueArr.svg"
-                                alt="back" data-currency-processed="true"></span><a class=" " href="/"
+                                alt="back" data-currency-processed="true"></span><a class=" " href="/car-listing"
                                                                                     data-currency-processed="true"><img
                                 width="83" height="38" class="Header-module__logoSizeRev hasEvents"
-                                src="https://cdn-frontend-r2.syarah.com/prod/assets/images/logoN.svg"
+                                src="{{ asset('logoN.svg') }}"
                                 alt="syarah logo icon" data-currency-processed="true"></a></span>
                 <p class="m-show Header-module__mobHasTitle" data-currency-processed="true"></p>
                 <ul data-currency-processed="true">
