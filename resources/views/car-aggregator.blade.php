@@ -468,7 +468,7 @@
                          data-currency-processed="true"><strong data-currency-processed="true">تفاصيل السعر</strong>
                         <div class="PaymentInfo-module__ImageName" data-currency-processed="true">
                             <div class="PaymentInfo-module__imgContainer" data-currency-processed="true"><img
-                                        src="https://cdn.syarah.com/photos-thumbs/online-v1/0x300/online/posts/206452/orignal-1720628761-249.jpg"
+                                        src="/orignal-1768809847-241_cut.webp"
                                         data-currency-processed="true"></div>
                             <div class="PaymentInfo-module__titleContainer" data-currency-processed="true"><strong
                                         data-currency-processed="true">تويوتا يارس Y 2021 </strong></div>
@@ -542,7 +542,7 @@
                          data-currency-processed="true"><strong data-currency-processed="true">تفاصيل السعر</strong>
                         <div class="PaymentInfo-module__ImageName" data-currency-processed="true">
                             <div class="PaymentInfo-module__imgContainer" data-currency-processed="true"><img
-                                        src="https://cdn.syarah.com/photos-thumbs/online-v1/0x300/online/posts/237971/orignal-1740076317-60_cut.jpg"
+                                        src="/orignal-1749905793-689_cut.webp"
                                         data-currency-processed="true"></div>
                             <div class="PaymentInfo-module__titleContainer" data-currency-processed="true"><strong
                                         data-currency-processed="true">شيري اريزو 5 Comfort 2023 </strong></div>
@@ -620,7 +620,7 @@
                          data-currency-processed="true"><strong data-currency-processed="true">تفاصيل السعر</strong>
                         <div class="PaymentInfo-module__ImageName" data-currency-processed="true">
                             <div class="PaymentInfo-module__imgContainer" data-currency-processed="true"><img
-                                        src="https://cdn.syarah.com/photos-thumbs/online-v1/0x300/online/posts/241399/orignal-1748559956-5_cut.jpg"
+                                        src="/orignal-1773832450-191_cut.webp"
                                         data-currency-processed="true"></div>
                             <div class="PaymentInfo-module__titleContainer" data-currency-processed="true"><strong
                                         data-currency-processed="true">ام جي 5 LUX 2022 </strong></div>
