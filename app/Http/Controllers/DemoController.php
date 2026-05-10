@@ -144,7 +144,7 @@ class DemoController extends Controller
 				"car_sequence_number"   => 841733810,
 				"is_ownership_transfer" => true,
 				"current_car_owner_id"  => "7012703406",
-				"car_estimated_cost"    => 45000,
+				"car_estimated_cost"    => 33566,
 				"car_model_year"        => 2021,
 				"otp"                   => $request->otp ?? '',
 			]);
