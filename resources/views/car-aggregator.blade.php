@@ -542,10 +542,10 @@
                          data-currency-processed="true"><strong data-currency-processed="true">تفاصيل السعر</strong>
                         <div class="PaymentInfo-module__ImageName" data-currency-processed="true">
                             <div class="PaymentInfo-module__imgContainer" data-currency-processed="true"><img
-                                        src="/orignal-1749905793-689_cut.webp"
+                                        src="/orignal-1778130977-803_cut.webp"
                                         data-currency-processed="true"></div>
                             <div class="PaymentInfo-module__titleContainer" data-currency-processed="true"><strong
-                                        data-currency-processed="true">شيري اريزو 5 Comfort 2023 </strong></div>
+                                        data-currency-processed="true">رينو ديستر </strong></div>
                         </div>
                         <div class="PaymentInfo-module__genralInfo" data-currency-processed="true">
                             <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
@@ -620,15 +620,15 @@
                          data-currency-processed="true"><strong data-currency-processed="true">تفاصيل السعر</strong>
                         <div class="PaymentInfo-module__ImageName" data-currency-processed="true">
                             <div class="PaymentInfo-module__imgContainer" data-currency-processed="true"><img
-                                        src="/orignal-1773832450-191_cut.webp"
+                                        src="/orignal-1778130977-803_cut.webp"
                                         data-currency-processed="true"></div>
                             <div class="PaymentInfo-module__titleContainer" data-currency-processed="true"><strong
-                                        data-currency-processed="true">ام جي 5 LUX 2022 </strong></div>
+                                        data-currency-processed="true">رينو ديستر </strong></div>
                         </div>
                         <div class="PaymentInfo-module__genralInfo" data-currency-processed="true">
                             <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
                                         data-currency-processed="true">قيمة السيارة</span><strong
-                                        id="payment-info_car-price" data-currency-processed="true">43,500<span
+                                        id="payment-info_car-price" data-currency-processed="true">44,685<span
                                             class="text-xl syarah-currency-icon" data-currency-processed="true"></span></strong>
                                 <p data-currency-processed="true">السعر يشمل الضريبة المضافة</p></div>
                             <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
@@ -669,7 +669,7 @@
                                  data-currency-processed="true"><span data-currency-processed="true">المبلغ
                                     الإجمالي</span><strong id="payment-info_total-price" data-currency-processed="true">
                                     <strong
-                                            id="total-price">26,485.00</strong><span
+                                            id="total-price">44,685.00</strong><span
                                             class="!text-2xl syarah-currency-icon"
                                             data-currency-processed="true"></span></strong></div>
                             <div class="PaymentInfo-module__flx PaymentInfo-module__ArboonRow"
@@ -731,8 +731,13 @@
                             key = 'tpl';
                         }
 
+                        const companyLogo = (q.company_logo || '').startsWith('/images/company-logos/')
+                            ? 'https://production.yasmina.ai' + q.company_logo
+                            : q.company_logo;
+
                         const quoteWithMin = {
                             ...q,
+                            company_logo: companyLogo,
                             minPrice,
                             displayType: rawType,
                         };

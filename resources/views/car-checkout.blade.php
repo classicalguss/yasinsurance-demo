@@ -365,10 +365,9 @@
                                  data-currency-processed="true"><strong>تفاصيل السعر</strong>
                                 <div class="PaymentInfo-module__ImageName">
                                     <div class="PaymentInfo-module__imgContainer"><img
-                                                src="/orignal-1749905793-689_cut.webp">
+                                                src="/orignal-1778130977-803_cut.webp">
                                     </div>
-                                    <div class="PaymentInfo-module__titleContainer"><strong>شيري اريزو 5 Comfort
-                                            2023 </strong></div>
+                                    <div class="PaymentInfo-module__titleContainer"><strong>رينو ديستر</strong></div>
                                 </div>
                                 <div class="PaymentInfo-module__genralInfo" data-currency-processed="true">
                                     <div class="PaymentInfo-module__flx" data-currency-processed="true"><span
